@@ -11,8 +11,17 @@ const MY_NAME = params.get('name') || 'Anonymous';
 const IS_HOST = params.get('host') === 'true';
 const INITIAL_PEERS = JSON.parse(decodeURIComponent(params.get('peers') || '[]'));
 
-const WS_URL = (window.SF_CONFIG && window.SF_CONFIG.wsUrl)
-    || `ws://${location.hostname}:${location.port || 4000}`;
+// Resolve WebSocket URL — works locally and in prod
+function resolveWsUrl() {
+    if (window.SF_CONFIG && window.SF_CONFIG.wsUrl &&
+        !window.SF_CONFIG.wsUrl.includes('YOUR-SIGNALING')) {
+        return window.SF_CONFIG.wsUrl;
+    }
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const port = location.port || (location.protocol === 'https:' ? '443' : '80');
+    return `${proto}//${location.hostname}:${port}`;
+}
+const WS_URL = resolveWsUrl();
 
 // ─── State ────────────────────────────────────────────────────────
 let ws = null;

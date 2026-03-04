@@ -3,8 +3,19 @@
  * Handles room creation and joining via WebSocket signaling
  */
 
-const WS_URL = (window.SF_CONFIG && window.SF_CONFIG.wsUrl)
-    || `ws://${location.hostname}:${location.port || 4000}`;
+// Resolve WebSocket URL — works locally and in prod
+function resolveWsUrl() {
+    // Production: use config.js value
+    if (window.SF_CONFIG && window.SF_CONFIG.wsUrl &&
+        !window.SF_CONFIG.wsUrl.includes('YOUR-SIGNALING')) {
+        return window.SF_CONFIG.wsUrl;
+    }
+    // Local dev: same host/port as the page, just swap protocol
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const port = location.port || (location.protocol === 'https:' ? '443' : '80');
+    return `${proto}//${location.hostname}:${port}`;
+}
+const WS_URL = resolveWsUrl();
 let ws = null;
 let pendingAction = null; // 'create' | 'join'
 
