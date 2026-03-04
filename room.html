@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamFlow — Room</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="room.css">
+</head>
+
+<body>
+    <!-- Top Bar -->
+    <header class="topbar">
+        <div class="topbar-left">
+            <div class="logo">
+                <svg viewBox="0 0 32 32" fill="none" width="22" height="22">
+                    <path d="M8 6L26 16L8 26V6Z" fill="url(#lg2)" />
+                    <defs>
+                        <linearGradient id="lg2" x1="8" y1="6" x2="26" y2="26">
+                            <stop stop-color="#00F5D4" />
+                            <stop offset="1" stop-color="#7B2CBF" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span>StreamFlow</span>
+            </div>
+            <div class="room-code-chip" id="roomCodeChip" title="Click to copy">
+                <svg viewBox="0 0 20 20" fill="none" width="13" height="13">
+                    <rect x="3" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M7 7V5a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2h-2" stroke="currentColor"
+                        stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+                <span id="roomCodeDisplay">——————</span>
+            </div>
+        </div>
+        <div class="topbar-center">
+            <div class="peer-count" id="peerCount">
+                <svg viewBox="0 0 20 20" fill="none" width="14" height="14">
+                    <circle cx="7" cy="6" r="3" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M1 16c0-3.314 2.686-6 6-6" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" />
+                    <circle cx="14" cy="6" r="3" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M19 16c0-3.314-2.686-6-6-6" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" />
+                </svg>
+                <span id="countLabel">1 in room</span>
+            </div>
+        </div>
+        <div class="topbar-right">
+            <button class="leave-btn" id="leaveBtn">
+                <svg viewBox="0 0 20 20" fill="none" width="14" height="14">
+                    <path d="M13 5l-5 5 5 5M8 10h9M7 3H4a1 1 0 00-1 1v12a1 1 0 001 1h3" stroke="currentColor"
+                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Leave
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="room-layout">
+        <!-- Left: Participants Grid -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span>Participants</span>
+            </div>
+            <div class="participants-grid" id="participantsGrid">
+                <!-- Tiles injected by room.js -->
+            </div>
+            <!-- Local Controls -->
+            <div class="local-controls">
+                <button class="ctrl-pill" id="micBtn" title="Mute/Unmute">
+                    <svg class="icon-mic" viewBox="0 0 24 24" fill="none">
+                        <rect x="9" y="2" width="6" height="12" rx="3" stroke="currentColor" stroke-width="2" />
+                        <path d="M5 11a7 7 0 0014 0M12 18v4M9 22h6" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" />
+                    </svg>
+                    <svg class="icon-mic-off" viewBox="0 0 24 24" fill="none" style="display:none">
+                        <rect x="9" y="2" width="6" height="12" rx="3" stroke="currentColor" stroke-width="2" />
+                        <path d="M5 11a7 7 0 0014 0M12 18v4M9 22h6M3 3l18 18" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" />
+                    </svg>
+                    <span>Mute</span>
+                </button>
+                <button class="ctrl-pill" id="camBtn" title="Toggle Camera">
+                    <svg class="icon-cam" viewBox="0 0 24 24" fill="none">
+                        <path d="M23 7l-7 5 7 5V7z" fill="currentColor" opacity=".4" />
+                        <path d="M23 7l-7 5 7 5V7z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                        <rect x="1" y="5" width="14" height="14" rx="2" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <svg class="icon-cam-off" viewBox="0 0 24 24" fill="none" style="display:none">
+                        <path d="M16 16l7 4V7.5M1 1l22 22M11 5H3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 001.9-1.4"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span>Cam Off</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Right: Shared Video Player -->
+        <main class="player-panel">
+            <!-- URL Input for shared video -->
+            <div class="video-url-bar" id="videoUrlBar">
+                <div class="url-input-row">
+                    <svg viewBox="0 0 20 20" fill="none" width="16" height="16"
+                        style="flex-shrink:0;color:var(--text-3)">
+                        <path d="M10 9a3 3 0 100-6 3 3 0 000 6zM3 18a7 7 0 0114 0" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                    <input type="url" id="sharedVideoUrl" placeholder="Paste a video URL to watch together…"
+                        autocomplete="off" spellcheck="false" />
+                    <button class="stream-btn" id="streamBtn">
+                        <svg viewBox="0 0 20 20" fill="none" width="14" height="14">
+                            <path d="M6 4l12 6-12 6V4z" fill="currentColor" />
+                        </svg>
+                        Stream
+                    </button>
+                </div>
+                <div class="url-hint">Everyone in the room sees the same video in sync</div>
+            </div>
+
+            <!-- Video Player -->
+            <div class="player-wrap" id="playerWrap">
+                <div class="player-empty" id="playerEmpty">
+                    <svg viewBox="0 0 48 48" fill="none" width="56" height="56">
+                        <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="1.5" opacity="0.3" />
+                        <path d="M19 16l14 8-14 8V16z" fill="currentColor" opacity="0.5" />
+                    </svg>
+                    <p>Paste a video URL above to start watching together</p>
+                </div>
+
+                <video id="sharedPlayer" class="shared-player" preload="auto" playsinline style="display:none"></video>
+
+                <!-- Loading overlay -->
+                <div class="player-loading" id="playerLoading" style="display:none">
+                    <div class="spinner">
+                        <div class="spinner-ring"></div>
+                        <div class="spinner-ring"></div>
+                        <div class="spinner-ring"></div>
+                    </div>
+                    <span>Buffering…</span>
+                </div>
+
+                <!-- Player Controls -->
+                <div class="player-controls" id="playerControls" style="display:none">
+                    <div class="progress-bar-wrap" id="progressWrap">
+                        <div class="progress-buf" id="progressBuf"></div>
+                        <div class="progress-played" id="progressPlayed"></div>
+                        <div class="progress-thumb" id="progressThumb"></div>
+                        <div class="progress-tip" id="progressTip">0:00</div>
+                    </div>
+                    <div class="ctrl-row">
+                        <div class="ctrl-left">
+                            <button class="ico-btn" id="playBtn" title="Play / Pause (Space)">
+                                <svg class="icon-play" viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M8 5.14v13.72a1 1 0 001.5.86l11-6.86a1 1 0 000-1.72l-11-6.86a1 1 0 00-1.5.86z"
+                                        fill="currentColor" />
+                                </svg>
+                                <svg class="icon-pause" viewBox="0 0 24 24" fill="none" style="display:none">
+                                    <rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor" />
+                                    <rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor" />
+                                </svg>
+                            </button>
+                            <button class="ico-btn" id="skipBackBtn" title="Back 10s">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M12.5 8V4L6 9l6.5 5v-4c3.5 0 6.5 2.9 6.5 6.5S16 23 12.5 23 6 20.1 6 16.5"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" /><text x="9.5"
+                                        y="16.5" font-size="6" fill="currentColor" font-family="sans-serif">10</text>
+                                </svg>
+                            </button>
+                            <button class="ico-btn" id="skipFwdBtn" title="Forward 10s">
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M11.5 8V4L18 9l-6.5 5v-4C8 10 5 12.9 5 16.5S8 23 11.5 23 18 20.1 18 16.5"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" /><text x="8.5"
+                                        y="16.5" font-size="6" fill="currentColor" font-family="sans-serif">10</text>
+                                </svg>
+                            </button>
+                            <div class="vol-wrap">
+                                <button class="ico-btn" id="volBtn" title="Mute">
+                                    <svg class="icon-vol" viewBox="0 0 24 24" fill="none">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5z" fill="currentColor" />
+                                        <path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                    </svg>
+                                    <svg class="icon-vol-mute" viewBox="0 0 24 24" fill="none" style="display:none">
+                                        <path d="M11 5L6 9H2v6h4l5 4V5z" fill="currentColor" />
+                                        <path d="M23 9l-6 6M17 9l6 6" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" />
+                                    </svg>
+                                </button>
+                                <input type="range" class="vol-slider" id="volSlider" min="0" max="1" step="0.01"
+                                    value="1">
+                            </div>
+                            <span class="time-display">
+                                <span id="curTime">0:00</span>
+                                <span class="sep">/</span>
+                                <span id="durDisplay">0:00</span>
+                            </span>
+                            <div class="sync-badge" id="syncBadge" style="display:none">
+                                <span class="sync-dot"></span>Synced
+                            </div>
+                        </div>
+                        <div class="ctrl-right">
+                            <div class="speed-wrap">
+                                <button class="ico-btn speed-btn" id="speedBtn"><span id="speedVal">1×</span></button>
+                                <div class="speed-menu" id="speedMenu">
+                                    <button data-speed="0.5">0.5×</button>
+                                    <button data-speed="0.75">0.75×</button>
+                                    <button data-speed="1" class="active">1×</button>
+                                    <button data-speed="1.5">1.5×</button>
+                                    <button data-speed="2">2×</button>
+                                </div>
+                            </div>
+                            <button class="ico-btn" id="fsBtn" title="Fullscreen (F)">
+                                <svg class="icon-expand" viewBox="0 0 24 24" fill="none">
+                                    <path
+                                        d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                                <svg class="icon-compress" viewBox="0 0 24 24" fill="none" style="display:none">
+                                    <path
+                                        d="M8 3v3a2 2 0 01-2 2H3m18 0h-3a2 2 0 01-2-2V3m0 18v-3a2 2 0 012-2h3M3 16h3a2 2 0 012 2v3"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Permission Denied Modal -->
+    <div class="modal-overlay" id="permModal" style="display:none">
+        <div class="modal">
+            <div class="modal-icon">🎥</div>
+            <h3>Camera & Mic Access</h3>
+            <p>StreamFlow needs camera and microphone access to show your video to others in the room.</p>
+            <div class="modal-actions">
+                <button class="modal-btn primary" id="permAllow">Allow Access</button>
+                <button class="modal-btn" id="permSkip">Join Without Camera</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="room.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreamFlow — Watch Together</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="lobby.css">
+</head>
+
+<body>
+    <div class="app">
+        <!-- Background -->
+        <div class="bg-layer bg-gradient"></div>
+        <div class="bg-layer bg-grid"></div>
+        <div class="bg-layer bg-glow glow-1"></div>
+        <div class="bg-layer bg-glow glow-2"></div>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 32 32" fill="none">
+                    <path d="M8 6L26 16L8 26V6Z" fill="url(#lg)" stroke="rgba(0,245,212,0.4)" stroke-width="1" />
+                    <defs>
+                        <linearGradient id="lg" x1="8" y1="6" x2="26" y2="26">
+                            <stop stop-color="#00F5D4" />
+                            <stop offset="1" stop-color="#7B2CBF" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">StreamFlow</span>
+                <span class="logo-badge">Together</span>
+            </div>
+            <a href="/index.html" class="solo-link">Solo Player →</a>
+        </header>
+
+        <!-- Hero -->
+        <main class="hero">
+            <div class="hero-text">
+                <h1 class="hero-title">Watch. Together.<br><span class="accent">In Sync.</span></h1>
+                <p class="hero-sub">Create a room, share the code, and stream any video — live camera &amp; mic
+                    included.</p>
+            </div>
+
+            <div class="cards">
+                <!-- Create Room Card -->
+                <div class="card card-create">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="3" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2" />
+                            <path d="M12 17v4M8 21h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            <path d="M9 10l3-3 3 3M12 7v6" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h2>Create a Room</h2>
+                    <p>Start a new watch party. You'll get a 6-digit code to share.</p>
+                    <div class="input-group">
+                        <label>Your Name</label>
+                        <input type="text" id="createName" placeholder="Enter your name" maxlength="24"
+                            autocomplete="off">
+                    </div>
+                    <button class="btn btn-primary" id="createBtn">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" />
+                        </svg>
+                        Create Room
+                    </button>
+                </div>
+
+                <div class="card-divider">
+                    <span>OR</span>
+                </div>
+
+                <!-- Join Room Card -->
+                <div class="card card-join">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M15 3h6v6M10 14L21 3M9 21H3v-6M3 15l6 6" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h2>Join a Room</h2>
+                    <p>Have a code? Enter it below to join your friends.</p>
+                    <div class="input-group">
+                        <label>Your Name</label>
+                        <input type="text" id="joinName" placeholder="Enter your name" maxlength="24"
+                            autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label>Room Code</label>
+                        <input type="text" id="roomCode" placeholder="XXXXXX" maxlength="6" autocomplete="off"
+                            class="code-input">
+                    </div>
+                    <button class="btn btn-secondary" id="joinBtn">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Join Room
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- Toast Notification -->
+        <div class="toast" id="toast"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="lobby.js"></script>
+</body>
+
+</html>

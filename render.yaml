@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: streamflow-signaling
+    env: node
+    buildCommand: npm install ws
+    startCommand: node signaling-server.js
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 10000
