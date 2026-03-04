@@ -1,5 +1,12 @@
 {
     "version": 2,
+    "redirects": [
+        {
+            "source": "/",
+            "destination": "/lobby.html",
+            "permanent": false
+        }
+    ],
     "rewrites": [
         {
             "source": "/proxy",
